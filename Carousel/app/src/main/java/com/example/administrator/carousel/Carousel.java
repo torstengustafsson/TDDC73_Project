@@ -75,9 +75,10 @@ public class Carousel extends LinearLayout {
     }
 
     private void updateItems() {
+        Log.d("Carousel", "Updating items");
         layoutBottom.removeAllViews();
         for(int i = 0; i < Math.min(items.size(), 4); i++) {
-            ItemView item = new ItemView(getContext(), items.get(i).name);
+            ItemView item = new ItemView(getContext(), items.get(i).name, items.get(i).imageUrl);
             LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.MATCH_PARENT,
