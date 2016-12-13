@@ -51,7 +51,7 @@ class NetworkRetriever extends AsyncTask<String, Void, ArrayList<Item>> {
                     Log.i("NetworkRetriever", "3");
                     String imageLink = item.getString("Poster");
                     Log.i("NetworkRetriever", "" + name + " " + imageLink);
-                    res.add(new Item(name));
+                    res.add(new Item(name, imageLink));
                 }
             }
             catch (Exception e) {
