@@ -8,19 +8,21 @@
             android:id="@+id/headerLayout">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Header"
+                android:layout_weight="1"
                 android:id="@+id/headerText"/>
 
 
 
             <!-- TODO: Change to custom view -->
-            <View
-                android:layout_width="wrap_content"
+            <com.example.administrator.carousel.PageIndicator
+                android:id="@+id/PageIndicatorView"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/pageIndicator"
-                />
+                android:layout_weight="5">
+            </com.example.administrator.carousel.PageIndicator>
 
         </LinearLayout>
 
