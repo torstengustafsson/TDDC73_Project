@@ -42,6 +42,7 @@ class NetworkRetriever extends AsyncTask<String, Void, ArrayList<Item>> {
                 JSONObject jObj = new JSONObject(resultString);
                 JSONArray jArr = jObj.getJSONArray("Search");
 
+
                 for(int i=0; i < Math.min(jArr.length(), maxResults); i++) {
                     Log.i("NetworkRetriever", "1");
                     JSONObject item = ((JSONObject) jArr.get(i));
@@ -59,8 +60,9 @@ class NetworkRetriever extends AsyncTask<String, Void, ArrayList<Item>> {
             finally {
                 urlConnection.disconnect();
             }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        } catch (Exception e) {
+            Log.i("NetworkRetriever", "No internet");
+            return res;
         }
 
         return res;

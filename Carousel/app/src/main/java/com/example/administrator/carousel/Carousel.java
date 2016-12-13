@@ -8,11 +8,13 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Region;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AbsoluteLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -37,7 +39,7 @@ public class Carousel extends LinearLayout {
     public Carousel(Context context) {
         super(context);
 
-        setPadding(10, 10, 10 ,10);
+        setPadding(10, 10, 10, 10);
         setOrientation(VERTICAL);
         LayoutParams params = new LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
         setLayoutParams(params);
@@ -52,12 +54,6 @@ public class Carousel extends LinearLayout {
         header = (TextView) findViewById(R.id.headerText);
 
         header.setText("A Header Text");
-
-        for(int i = 0; i < 4; i++) {
-            TextView t = new TextView(context);
-            t.setText("dsd");
-            layoutBottom.addView(t);
-        }
 
         networkRetriever = new NetworkRetriever(this, 10, 0);
         networkRetriever.execute("star%20wars");
@@ -76,7 +72,14 @@ public class Carousel extends LinearLayout {
 
     private void updateItems() {
         layoutBottom.removeAllViews();
-        for(int i = 0; i < Math.min(items.size(), 4); i++) {
+        if (items.size() == 0) {
+            Toast toast = Toast.makeText(getContext(), "Missing internet connection, please connect to internet and restart app.", Toast.LENGTH_LONG);
+            TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+            if( v != null) v.setGravity(Gravity.CENTER);
+            toast.show();
+            return;
+        }
+        for (int i = 0; i < Math.min(items.size(), 4); i++) {
             ItemView item = new ItemView(getContext(), items.get(i).name);
             LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
