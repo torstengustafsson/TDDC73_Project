@@ -46,11 +46,11 @@ public class Carousel extends LinearLayout {
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.carousel, this);
 
-/*
+
         layoutTop = (LinearLayout) findViewById(R.id.headerLayout);
         layoutBottom = (LinearLayout) findViewById(R.id.carouselItemLayout);
         header = (TextView) findViewById(R.id.headerText);
-        if(header == null) Log.d("hej", "hej"); else Log.d("hej", "hallo");
+
         header.setText("A Header Text");
 
         for(int i = 0; i < 4; i++) {
@@ -58,9 +58,9 @@ public class Carousel extends LinearLayout {
             t.setText("dsd");
             layoutBottom.addView(t);
         }
-*/
-        //networkRetriever = new NetworkRetriever(this, 10, 0);
-        //networkRetriever.execute("star%20wars");
+
+        networkRetriever = new NetworkRetriever(this, 10, 0);
+        networkRetriever.execute("star%20wars");
 
         paint = new Paint();
     }
@@ -77,7 +77,13 @@ public class Carousel extends LinearLayout {
     private void updateItems() {
         layoutBottom.removeAllViews();
         for(int i = 0; i < Math.min(items.size(), 4); i++) {
-            layoutBottom.addView(new ItemView(getContext(), items.get(i).name));
+            ItemView item = new ItemView(getContext(), items.get(i).name);
+            LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    1f);
+            item.setLayoutParams(llp);
+            layoutBottom.addView(item);
         }
     }
 }

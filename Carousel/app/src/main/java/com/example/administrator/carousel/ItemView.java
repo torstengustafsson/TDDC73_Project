@@ -23,6 +23,7 @@ public class ItemView extends LinearLayout {
 
         TextView name = new TextView(context);
         name.setText(nameText);
+        name.setTextSize(8);
         addView(name);
     }
 

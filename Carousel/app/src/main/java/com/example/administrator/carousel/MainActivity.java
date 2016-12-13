@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
         Carousel carousel = new Carousel(this);
 
         TextView text2 = new TextView(this);
-        text2.setText("More text below...!");
+        text2.setText("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eu ipsum et tellus pellentesque egestas. Donec ut rutrum ligula. Pellentesque erat nisl, ultrices ut justo sit amet, sagittis molestie felis. Sed at rhoncus dui. Fusce tempus aliquam eleifend. Morbi id erat eu metus finibus tincidunt. Sed non dolor metus.");
 
 
         layout.addView(text1);
