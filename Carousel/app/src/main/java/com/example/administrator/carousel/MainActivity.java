@@ -2,8 +2,11 @@ package com.example.administrator.carousel;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.InputType;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
+import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -31,15 +34,16 @@ public class MainActivity extends AppCompatActivity {
         TextView text2 = new TextView(this);
         text2.setText("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eu ipsum et tellus pellentesque egestas. Donec ut rutrum ligula. Pellentesque erat nisl, ultrices ut justo sit amet, sagittis molestie felis. Sed at rhoncus dui. Fusce tempus aliquam eleifend. Morbi id erat eu metus finibus tincidunt. Sed non dolor metus.");
 
-        searchText.setInputType(InputType.TYPE_CLASS_TEXT);
         searchText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            public boolean onEditorAction(TextView exampleView, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_NULL
-                        && event.getAction() == KeyEvent.ACTION_DOWN) {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
                     carousel.setHeaderText("Search results for '" + searchText.getText().toString() + "'");
                     carousel.search(searchText.getText().toString());
+
+                    return true;
                 }
-                return true;
+                return false;
             }
         });
 
