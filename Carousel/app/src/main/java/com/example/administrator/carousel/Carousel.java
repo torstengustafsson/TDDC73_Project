@@ -32,6 +32,7 @@ public class Carousel extends LinearLayout {
 
     LinearLayout layoutTop, layoutBottom;
     TextView header;
+    PageIndicator pageI;
 
     ArrayList<Item> items;
 
@@ -55,9 +56,8 @@ public class Carousel extends LinearLayout {
 
         layoutTop = (LinearLayout) findViewById(R.id.headerLayout);
         layoutBottom = (LinearLayout) findViewById(R.id.carouselItemLayout);
-
         header = (TextView) findViewById(R.id.headerText);
-        header.setText("A Header Text");
+        pageI = (PageIndicator) findViewById(R.id.pageIndicatorView);
 
         paint = new Paint();
     }
@@ -86,6 +86,7 @@ public class Carousel extends LinearLayout {
             toast.show();
             return;
         }
+        pageI.setItems(items.size());
         for (int i = 0; i < Math.min(items.size(), 4); i++) {
             ItemView item = new ItemView(getContext(), items.get(i).name, items.get(i).imageUrl);
             LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(
@@ -95,5 +96,6 @@ public class Carousel extends LinearLayout {
             item.setLayoutParams(llp);
             layoutBottom.addView(item);
         }
+        pageI.invalidate();
     }
 }

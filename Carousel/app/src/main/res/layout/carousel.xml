@@ -11,8 +11,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Header test"
-                android:textSize="12dp"
+                android:textSize="12sp"
                 android:textStyle="bold"
                 android:layout_gravity="center"
                 android:layout_weight="1"
@@ -22,10 +21,10 @@
 
             <!-- TODO: Change to custom view -->
             <com.example.administrator.carousel.PageIndicator
-                android:id="@+id/PageIndicatorView"
+                android:id="@+id/pageIndicatorView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="5">
+                android:layout_weight="2">
             </com.example.administrator.carousel.PageIndicator>
 
         </LinearLayout>
