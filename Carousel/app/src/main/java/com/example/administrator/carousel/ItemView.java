@@ -24,8 +24,6 @@ public class ItemView extends LinearLayout {
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.itemview, this);
 
-
-        setOrientation(VERTICAL);
         name = (TextView) findViewById(R.id.itemView_text);
         name.setTextSize(10);
         nameText = nameText.length() > 25 ? nameText.substring(0, 22) + "..." : nameText;

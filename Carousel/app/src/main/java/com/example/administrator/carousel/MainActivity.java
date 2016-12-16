@@ -2,6 +2,9 @@ package com.example.administrator.carousel;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.KeyEvent;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -16,15 +19,29 @@ public class MainActivity extends AppCompatActivity {
         layout.setOrientation(LinearLayout.VERTICAL);
 
         TextView text1 = new TextView(this);
-        text1.setText("A nice carousel demo app!");
+        text1.setText("Search for movies:");
 
-        Carousel carousel = new Carousel(this);
+        final EditText searchText = new EditText(this);
+        searchText.setHint("e.g. 'star wars'");
+
+        final Carousel carousel = new Carousel(this);
 
         TextView text2 = new TextView(this);
         text2.setText("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eu ipsum et tellus pellentesque egestas. Donec ut rutrum ligula. Pellentesque erat nisl, ultrices ut justo sit amet, sagittis molestie felis. Sed at rhoncus dui. Fusce tempus aliquam eleifend. Morbi id erat eu metus finibus tincidunt. Sed non dolor metus.");
 
+        searchText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            public boolean onEditorAction(TextView exampleView, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_NULL
+                        && event.getAction() == KeyEvent.ACTION_DOWN) {
+                    carousel.setHeaderText("Search results for '" + searchText.getText().toString() + "'");
+                    carousel.search(searchText.getText().toString());
+                }
+                return true;
+            }
+        });
 
         layout.addView(text1);
+        layout.addView(searchText);
         layout.addView(carousel);
         layout.addView(text2);
 
