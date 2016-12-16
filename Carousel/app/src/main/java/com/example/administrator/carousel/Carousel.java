@@ -27,6 +27,7 @@ import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 public class Carousel extends LinearLayout {
 
+    Context context;
     NetworkRetriever networkRetriever;
     String imageDBURL;
 
@@ -41,6 +42,7 @@ public class Carousel extends LinearLayout {
     public Carousel(Context context, String imageDBURL) {
         super(context);
 
+        this.context = context;
         this.imageDBURL = imageDBURL;
 
         setPadding(10, 10, 10, 10);
@@ -88,7 +90,7 @@ public class Carousel extends LinearLayout {
 
         layoutBottom.removeAllViews();
         if (items.size() == 0) {
-            Toast toast = Toast.makeText(getContext(), "Missing internet connection, please connect to internet and restart app.", Toast.LENGTH_LONG);
+            Toast toast = Toast.makeText(getContext(), (networkRetriever.isOnline() ? "No results found" : "Missing internet connection, please connect to internet and search again."), Toast.LENGTH_SHORT);
             TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
             if( v != null) v.setGravity(Gravity.CENTER);
             toast.show();

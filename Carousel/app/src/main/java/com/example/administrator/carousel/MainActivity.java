@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         searchText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                     carousel.setHeaderText("Search results for '" + searchText.getText().toString() + "'");
                     carousel.search(searchText.getText().toString());
 

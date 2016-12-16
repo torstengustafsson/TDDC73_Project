@@ -1,8 +1,11 @@
 package com.example.administrator.carousel;
 
+import android.content.Context;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.ImageView;
@@ -61,7 +64,8 @@ class NetworkRetriever extends AsyncTask<String, Void, ArrayList<Item>> {
                 urlConnection.disconnect();
             }
         } catch (Exception e) {
-            Log.i("NetworkRetriever", "No internet");
+
+            Log.i("NetworkRetriever", (isOnline() ? "No result" : "No internet"));
             return res;
         }
 
@@ -70,5 +74,12 @@ class NetworkRetriever extends AsyncTask<String, Void, ArrayList<Item>> {
 
     protected void onPostExecute(ArrayList<Item> result) {
         callback.updateResults(result);
+    }
+
+    public boolean isOnline() {
+        ConnectivityManager cm =
+                (ConnectivityManager) callback.context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 }
