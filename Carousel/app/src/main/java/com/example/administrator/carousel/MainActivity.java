@@ -28,7 +28,10 @@ public class MainActivity extends AppCompatActivity {
         layout.addView(carousel);
         layout.addView(text2);
 
+        //ItemView i = new ItemView(this, "name", "https://images-na.ssl-images-amazon.com/images/M/MV5BMTI1MDIwMTczOV5BMl5BanBnXkFtZTcwNTI4MDE3MQ@@._V1_SX300.jpg");
+        //layout.addView(i);
+
         setContentView(layout);
-        //setContentView(R.layout.main);
+        //setContentView(R.layout.test);
     }
 }

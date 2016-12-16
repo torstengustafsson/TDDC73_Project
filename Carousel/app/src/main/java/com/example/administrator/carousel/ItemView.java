@@ -1,23 +1,10 @@
 package com.example.administrator.carousel;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.net.Uri;
-import android.util.Log;
-import android.view.View;
+import android.view.LayoutInflater;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-
-import javax.net.ssl.HttpsURLConnection;
 
 /**
  * Created by Administrator on 08/12/2016.
@@ -27,20 +14,23 @@ public class ItemView extends LinearLayout {
 
     TextView name;
     ImageView image;
-    ImageLoader imageLoader;
 
     public ItemView(Context context, String nameText, String urlText) {
         super(context);
         setPadding(10, 10, 10 ,10);
         setOrientation(VERTICAL);
 
-        name = new TextView(context);
-        name.setText(nameText);
-        name.setTextSize(8);
-        addView(name);
+        LayoutInflater inflater = (LayoutInflater) context
+                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        inflater.inflate(R.layout.itemview, this);
 
-        image = new ImageView(context);
-        addView(image);
-        new ImageLoader(context, image, urlText).execute();
+
+        setOrientation(VERTICAL);
+        name = (TextView) findViewById(R.id.itemView_text);
+        name.setTextSize(10);
+        nameText = nameText.length() > 25 ? nameText.substring(0, 22) + "..." : nameText;
+        name.setText(nameText);
+        image = (ImageView) findViewById(R.id.itemView_image);
+        new ImageLoader(context, image, urlText, this).execute();
     }
 }

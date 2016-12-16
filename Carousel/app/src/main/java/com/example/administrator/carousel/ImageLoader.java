@@ -7,6 +7,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.telecom.Call;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
@@ -19,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import java.io.InputStream;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Created by Sergey Shustikov (pandarium.shustikov@gmail.com) at 2015.
@@ -29,6 +31,9 @@ public class ImageLoader extends AsyncTask<String, Void, Bitmap>
     private final ImageView mDestination, mFakeForError;
     private final String mUrl;
     private final ProgressBar mProgressBar;
+
+    private ItemView callback;
+
     private Animation.AnimationListener mOutAnimationListener = new Animation.AnimationListener()
     {
         @Override
@@ -74,7 +79,7 @@ public class ImageLoader extends AsyncTask<String, Void, Bitmap>
     };
     private boolean isBitmapSet;
 
-    public ImageLoader(Context context, ImageView destination, String url)
+    public ImageLoader(Context context, ImageView destination, String url, ItemView callback)
     {
         mDestination = destination;
         mUrl = url;
@@ -97,6 +102,8 @@ public class ImageLoader extends AsyncTask<String, Void, Bitmap>
         layout.addView(mFakeForError);
         mProgressBar.setIndeterminate(true);
         parent.addView(layout, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+
+        this.callback = callback;
     }
 
     protected Bitmap doInBackground(String... urls)
