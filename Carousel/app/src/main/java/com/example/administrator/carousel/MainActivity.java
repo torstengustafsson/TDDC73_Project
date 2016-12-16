@@ -2,20 +2,21 @@ package com.example.administrator.carousel;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.Editable;
 import android.text.InputType;
-import android.text.TextWatcher;
 import android.view.KeyEvent;
-import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import java.util.ArrayList;
 
 import static android.view.inputmethod.EditorInfo.IME_ACTION_SEARCH;
 
 public class MainActivity extends AppCompatActivity {
+
+    NetworkRetriever networkRetriever;
+    Carousel carousel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
         searchText.setImeOptions(IME_ACTION_SEARCH);
         searchText.setHint("e.g. 'star wars'");
 
-        final Carousel carousel = new Carousel(this, "http://www.omdbapi.com/?s=");
+        carousel = new Carousel(this);
 
         TextView text2 = new TextView(this);
         text2.setText("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eu ipsum et tellus pellentesque egestas. Donec ut rutrum ligula. Pellentesque erat nisl, ultrices ut justo sit amet, sagittis molestie felis. Sed at rhoncus dui. Fusce tempus aliquam eleifend. Morbi id erat eu metus finibus tincidunt. Sed non dolor metus.");
@@ -40,25 +41,40 @@ public class MainActivity extends AppCompatActivity {
         searchText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    carousel.setHeaderText("Search results for '" + searchText.getText().toString() + "'");
-                    carousel.search(searchText.getText().toString());
-
+                if (actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_NULL  ) {
+                    networkRetriever = new NetworkRetriever(getBaseContext(), carousel, "http://www.omdbapi.com/?s=", 16);
+                    networkRetriever.execute(searchText.getText().toString().replaceAll(" ", "%20"));
                     return true;
                 }
                 return false;
             }
         });
 
+        initCarousel();
+
         layout.addView(text1);
         layout.addView(searchText);
         layout.addView(carousel);
         layout.addView(text2);
 
-        //ItemView i = new ItemView(this, "name", "https://images-na.ssl-images-amazon.com/images/M/MV5BMTI1MDIwMTczOV5BMl5BanBnXkFtZTcwNTI4MDE3MQ@@._V1_SX300.jpg");
-        //layout.addView(i);
-
         setContentView(layout);
-        //setContentView(R.layout.test);
+    }
+
+    // Demo function to show how you may bind url:s statically if you don't want to write an
+    // image retriever class (requires valid URL:s). Item is a container class used by Carousel
+    // that holds a title and an image URL.
+    private void initCarousel() {
+        ArrayList<Item> exampleCarouselItems = new ArrayList<>();
+        exampleCarouselItems.add(new Item("Image 1", "http://www.w3schools.com/css/img_fjords.jpg") );
+        exampleCarouselItems.add(new Item("Image 2", "https://www.smashingmagazine.com/wp-content/uploads/2015/06/10-dithering-opt.jpg") );
+        exampleCarouselItems.add(new Item("Image 3", "https://codepo8.github.io/canvas-images-and-pixels/img/horse.png") );
+        exampleCarouselItems.add(new Item("Image 4", "https://cdn.spacetelescope.org/archives/images/publicationjpg/heic0602a.jpg") );
+        exampleCarouselItems.add(new Item("Image 5", "http://www.vital-capital.com/media/EARTH_AT_NIGH_363137a.jpg") );
+        exampleCarouselItems.add(new Item("Image 6", "http://www.zastavki.com/pictures/originals/2013/Photoshop_Image_of_the_horse_053857_.jpg") );
+        exampleCarouselItems.add(new Item("Image 7", "https://www.tes.com/sites/default/files/news_article_images/trump_pic.jpg") );
+
+        carousel.updateResults(exampleCarouselItems);
+        carousel.setHeaderText("Some example images");
+
     }
 }

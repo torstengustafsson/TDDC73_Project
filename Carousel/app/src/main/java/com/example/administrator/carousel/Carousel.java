@@ -1,24 +1,17 @@
 package com.example.administrator.carousel;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Rect;
-import android.graphics.Region;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.AbsoluteLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 /**
@@ -28,8 +21,6 @@ import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 public class Carousel extends LinearLayout {
 
     Context context;
-    NetworkRetriever networkRetriever;
-    String imageDBURL;
 
     LinearLayout layoutTop, layoutBottom;
     TextView header;
@@ -39,11 +30,10 @@ public class Carousel extends LinearLayout {
 
     Paint paint;
 
-    public Carousel(Context context, String imageDBURL) {
+    public Carousel(Context context) {
         super(context);
 
         this.context = context;
-        this.imageDBURL = imageDBURL;
 
         setPadding(10, 10, 10, 10);
         setOrientation(VERTICAL);
@@ -69,21 +59,24 @@ public class Carousel extends LinearLayout {
         header.setText(_text);
     }
 
-    public void search(String _text) {
-        networkRetriever = new NetworkRetriever(this, imageDBURL, 16);
-        networkRetriever.execute(_text.replaceAll(" ", "%20"));
+    public void updateResults(ArrayList<Item> res, String searchString, boolean isOnline) {
+        items = res;
+        pageIndicator.reset();
+        setHeaderText("Search results for '" + searchString.replaceAll("%20", " ") + "'");
+        updateItems(pageIndicator.getCurrentPage(), isOnline);
     }
 
     public void updateResults(ArrayList<Item> res) {
         items = res;
-        updateItems(pageIndicator.getCurrentPage());
+        pageIndicator.reset();
+        updateItems(pageIndicator.getCurrentPage(), true);
     }
 
     public void updateResults() {
-        updateItems(pageIndicator.getCurrentPage());
+        updateItems(pageIndicator.getCurrentPage(), true);
     }
 
-    private void updateItems(int page) {
+    private void updateItems(int page, boolean isOnline) {
         Log.d("Carousel", "Updating items");
 
         if(items == null) return;
@@ -91,7 +84,7 @@ public class Carousel extends LinearLayout {
         layoutBottom.removeAllViews();
         if (items.size() == 0) {
             Toast toast = Toast.makeText(getContext(),
-                    (networkRetriever.isOnline() ? "No results found" : "Missing internet connection, please reconnect to internet and search again."),
+                    (isOnline ? "No results found" : "Missing internet connection, please reconnect to internet and search again."),
                     Toast.LENGTH_SHORT);
             TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
             if( v != null) v.setGravity(Gravity.CENTER);
@@ -99,8 +92,7 @@ public class Carousel extends LinearLayout {
             return;
         }
         pageIndicator.setItems(items.size());
-        for (int i = 4*page; i < 4 * page + 4; i++) {
-            if(items.size() <= i) break;
+        for (int i = 4 * page; i < Math.min(4 * page + 4, items.size()); i++) {
             ItemView item = new ItemView(getContext(), items.get(i).name, items.get(i).imageUrl);
             LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,

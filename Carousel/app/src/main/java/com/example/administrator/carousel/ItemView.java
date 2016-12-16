@@ -26,9 +26,10 @@ public class ItemView extends LinearLayout {
 
         name = (TextView) findViewById(R.id.itemView_text);
         name.setTextSize(10);
-        nameText = nameText.length() > 25 ? nameText.substring(0, 22) + "..." : nameText;
+        nameText = nameText.length() > 40 ? nameText.substring(0, 37) + "..." : nameText;
         name.setText(nameText);
         image = (ImageView) findViewById(R.id.itemView_image);
-        new ImageLoader(context, image, urlText, this).execute();
+        if(!urlText.equals("N/A"))
+            new ImageLoader(context, image, urlText, this).execute();
     }
 }
