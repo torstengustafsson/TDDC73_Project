@@ -4,7 +4,6 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -14,19 +13,21 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
-class NetworkRetriever extends AsyncTask<String, Void, ArrayList<Item>> {
+/**
+ * Retrieves URL:s from the OMDB API. Created to demonstrate our custom Carousel view.
+ */
+
+class OMDBRetriever extends AsyncTask<String, Void, ArrayList<Item>> {
 
     Context context;
     Carousel carousel;
-    private String imageDBURL;
     private int maxResults;
 
     private String searchString;
 
-    NetworkRetriever(Context context, Carousel carousel, String imageDBURL, int max) {
+    OMDBRetriever(Context context, Carousel carousel, int max) {
         this.context = context;
         this.carousel = carousel;
-        this.imageDBURL = imageDBURL;
         maxResults = max;
     }
 
@@ -40,8 +41,8 @@ class NetworkRetriever extends AsyncTask<String, Void, ArrayList<Item>> {
         int page = 0;
         while (true) {
             try {
-                //The URL id is actually not used here, because of the way NetworkRetriever is implemented, it is enough to store the id variable locally.
-                URL url = new URL(imageDBURL + searchString + "&page=" + ++page);
+                //The URL id is actually not used here, because of the way OMDBRetriever is implemented, it is enough to store the id variable locally.
+                URL url = new URL("http://www.omdbapi.com/?s=" + searchString + "&page=" + ++page);
 
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
                 try {
@@ -49,7 +50,6 @@ class NetworkRetriever extends AsyncTask<String, Void, ArrayList<Item>> {
                     java.util.Scanner s = new java.util.Scanner(in).useDelimiter("\\A");
                     String resultString = s.hasNext() ? s.next() : "";
                     JSONObject jObj = new JSONObject(resultString);
-                    Log.i("NetworkRetriever", "bool? " + page + ": " + jObj.getString("Response") + (jObj.getString("Response").equals("True")));
 
                     if(jObj.getString("Response").equals("False") || res.size() >= maxResults) break;
 
@@ -68,7 +68,6 @@ class NetworkRetriever extends AsyncTask<String, Void, ArrayList<Item>> {
                     urlConnection.disconnect();
                 }
             }catch(Exception e){
-                Log.i("NetworkRetriever", (isOnline() ? "No result" : "No internet"));
                 return res;
             }
         }
@@ -77,7 +76,6 @@ class NetworkRetriever extends AsyncTask<String, Void, ArrayList<Item>> {
     }
 
     protected void onPostExecute(ArrayList<Item> result) {
-        Log.i("NetworkRetriever", "size: " + result.size());
         carousel.updateResults(result, searchString, isOnline());
     }
 

@@ -7,7 +7,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 /**
- * Created by Administrator on 08/12/2016.
+ * Holds an item view that is used by the Carousel class.
  */
 
 public class ItemView extends LinearLayout {
@@ -29,6 +29,7 @@ public class ItemView extends LinearLayout {
         nameText = nameText.length() > 40 ? nameText.substring(0, 37) + "..." : nameText;
         name.setText(nameText);
         image = (ImageView) findViewById(R.id.itemView_image);
+        // OMDB uses the string 'N/A' to represent no image found. May be different for others.
         if(!urlText.equals("N/A"))
             new ImageLoader(context, image, urlText, this).execute();
     }

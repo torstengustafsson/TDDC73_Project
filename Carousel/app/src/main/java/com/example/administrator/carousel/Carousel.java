@@ -3,7 +3,6 @@ package com.example.administrator.carousel;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.widget.LinearLayout;
@@ -15,7 +14,8 @@ import java.util.ArrayList;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 /**
- * Created by Administrator on 08/12/2016.
+ * Displays a sequence of images in  a carousel format. It does not scroll on its own. Instead the
+ * user may scroll by using the existing back- and forth buttons.
  */
 
 public class Carousel extends LinearLayout {
@@ -77,8 +77,6 @@ public class Carousel extends LinearLayout {
     }
 
     private void updateItems(int page, boolean isOnline) {
-        Log.d("Carousel", "Updating items");
-
         if(items == null) return;
 
         layoutBottom.removeAllViews();

@@ -15,7 +15,6 @@ import static android.view.inputmethod.EditorInfo.IME_ACTION_SEARCH;
 
 public class MainActivity extends AppCompatActivity {
 
-    NetworkRetriever networkRetriever;
     Carousel carousel;
 
     @Override
@@ -35,15 +34,12 @@ public class MainActivity extends AppCompatActivity {
 
         carousel = new Carousel(this);
 
-        TextView text2 = new TextView(this);
-        text2.setText("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eu ipsum et tellus pellentesque egestas. Donec ut rutrum ligula. Pellentesque erat nisl, ultrices ut justo sit amet, sagittis molestie felis. Sed at rhoncus dui. Fusce tempus aliquam eleifend. Morbi id erat eu metus finibus tincidunt. Sed non dolor metus.");
-
         searchText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_NULL  ) {
-                    networkRetriever = new NetworkRetriever(getBaseContext(), carousel, "http://www.omdbapi.com/?s=", 16);
-                    networkRetriever.execute(searchText.getText().toString().replaceAll(" ", "%20"));
+                    OMDBRetriever OMDBRetriever = new OMDBRetriever(getBaseContext(), carousel, 16);
+                    OMDBRetriever.execute(searchText.getText().toString().replaceAll(" ", "%20"));
                     return true;
                 }
                 return false;
@@ -55,7 +51,6 @@ public class MainActivity extends AppCompatActivity {
         layout.addView(text1);
         layout.addView(searchText);
         layout.addView(carousel);
-        layout.addView(text2);
 
         setContentView(layout);
     }

@@ -1,7 +1,7 @@
 package com.example.administrator.carousel;
 
 /**
- * Created by Administrator on 08/12/2016.
+ * Holds the data for an ItemView used by the Carousel class.
  */
 
 public class Item {
