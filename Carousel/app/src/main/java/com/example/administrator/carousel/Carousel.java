@@ -42,6 +42,7 @@ public class Carousel extends LinearLayout {
 
         setPadding(10, 10, 10, 10);
         setOrientation(VERTICAL);
+        setBackgroundColor(Color.parseColor("#FFCCCC"));
         LayoutParams params = new LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
         setLayoutParams(params);
 
@@ -55,17 +56,16 @@ public class Carousel extends LinearLayout {
         header = (TextView) findViewById(R.id.headerText);
         pageI = (PageIndicator) findViewById(R.id.pageIndicatorView);
 
-
-        header.setText("A Header Text");
-
-        networkRetriever = new NetworkRetriever(this, 10, 0);
-        networkRetriever.execute("star%20wars");
-
         paint = new Paint();
     }
 
     public void setHeaderText(String _text) {
         header.setText(_text);
+    }
+
+    public void search(String _text) {
+        networkRetriever = new NetworkRetriever(this, 10, 0);
+        networkRetriever.execute(_text.replaceAll(" ", "%20"));
     }
 
     public void updateResults(ArrayList<Item> res, int id) {
@@ -93,5 +93,6 @@ public class Carousel extends LinearLayout {
             item.setLayoutParams(llp);
             layoutBottom.addView(item);
         }
+        pageI.invalidate();
     }
 }

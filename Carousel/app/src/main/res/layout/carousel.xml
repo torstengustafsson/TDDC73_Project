@@ -5,12 +5,15 @@
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingTop="10dp"
             android:id="@+id/headerLayout">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Header"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:layout_gravity="center"
                 android:layout_weight="1"
                 android:id="@+id/headerText"/>
 
@@ -30,19 +33,6 @@
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/carouselItemLayout">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/temp"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="fdsfdfa"
-                android:id="@+id/temp2"/>
-
-        </LinearLayout>
+            android:id="@+id/carouselItemLayout" />
 
 </merge>
