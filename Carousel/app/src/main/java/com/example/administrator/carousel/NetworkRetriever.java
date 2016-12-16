@@ -19,13 +19,13 @@ import java.util.ArrayList;
 class NetworkRetriever extends AsyncTask<String, Void, ArrayList<Item>> {
 
     private Carousel callback;
+    private String imageDBURL;
     private int maxResults;
-    private int id;
 
-    NetworkRetriever(Carousel callback, int max, int id) {
+    NetworkRetriever(Carousel callback, String imageDBURL, int max) {
         this.callback = callback;
+        this.imageDBURL = imageDBURL;
         maxResults = max;
-        this.id = id;
     }
 
     protected ArrayList<Item> doInBackground(String... strings) {
@@ -33,7 +33,7 @@ class NetworkRetriever extends AsyncTask<String, Void, ArrayList<Item>> {
         if(strings[0].equals("")) return res; // We may get error when asking for an empty string
         try {
             //The URL id is actually not used here, because of the way NetworkRetriever is implemented, it is enough to store the id variable locally.
-            URL url = new URL("http://www.omdbapi.com/?s=" + strings[0]);
+            URL url = new URL(imageDBURL + strings[0]);
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
             try {
                 InputStream in = new BufferedInputStream(urlConnection.getInputStream());
@@ -41,7 +41,6 @@ class NetworkRetriever extends AsyncTask<String, Void, ArrayList<Item>> {
                 String resultString = s.hasNext() ? s.next() : "";
                 JSONObject jObj = new JSONObject(resultString);
                 JSONArray jArr = jObj.getJSONArray("Search");
-
 
                 for(int i=0; i < Math.min(jArr.length(), maxResults); i++) {
                     Log.i("NetworkRetriever", "1");
@@ -69,6 +68,6 @@ class NetworkRetriever extends AsyncTask<String, Void, ArrayList<Item>> {
     }
 
     protected void onPostExecute(ArrayList<Item> result) {
-        callback.updateResults(result, id);
+        callback.updateResults(result);
     }
 }

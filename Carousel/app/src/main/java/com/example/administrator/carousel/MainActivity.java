@@ -2,6 +2,7 @@ package com.example.administrator.carousel;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.KeyEvent;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
@@ -22,9 +23,10 @@ public class MainActivity extends AppCompatActivity {
         text1.setText("Search for movies:");
 
         final EditText searchText = new EditText(this);
+        searchText.setInputType(InputType.TYPE_CLASS_TEXT);
         searchText.setHint("e.g. 'star wars'");
 
-        final Carousel carousel = new Carousel(this);
+        final Carousel carousel = new Carousel(this, "http://www.omdbapi.com/?s=");
 
         TextView text2 = new TextView(this);
         text2.setText("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eu ipsum et tellus pellentesque egestas. Donec ut rutrum ligula. Pellentesque erat nisl, ultrices ut justo sit amet, sagittis molestie felis. Sed at rhoncus dui. Fusce tempus aliquam eleifend. Morbi id erat eu metus finibus tincidunt. Sed non dolor metus.");

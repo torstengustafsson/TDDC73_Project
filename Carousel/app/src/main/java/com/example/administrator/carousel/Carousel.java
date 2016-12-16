@@ -28,6 +28,7 @@ import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 public class Carousel extends LinearLayout {
 
     NetworkRetriever networkRetriever;
+    String imageDBURL;
 
     LinearLayout layoutTop, layoutBottom;
     TextView header;
@@ -36,8 +37,10 @@ public class Carousel extends LinearLayout {
 
     Paint paint;
 
-    public Carousel(Context context) {
+    public Carousel(Context context, String imageDBURL) {
         super(context);
+
+        this.imageDBURL = imageDBURL;
 
         setPadding(10, 10, 10, 10);
         setOrientation(VERTICAL);
@@ -64,11 +67,11 @@ public class Carousel extends LinearLayout {
     }
 
     public void search(String _text) {
-        networkRetriever = new NetworkRetriever(this, 10, 0);
+        networkRetriever = new NetworkRetriever(this, imageDBURL, 10);
         networkRetriever.execute(_text.replaceAll(" ", "%20"));
     }
 
-    public void updateResults(ArrayList<Item> res, int id) {
+    public void updateResults(ArrayList<Item> res) {
         items = res;
         updateItems();
     }
