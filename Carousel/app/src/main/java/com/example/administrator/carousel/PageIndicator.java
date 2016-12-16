@@ -98,10 +98,15 @@ public class PageIndicator extends View {
     public boolean onTouchEvent(MotionEvent event) {
         // MotionEvent object holds X-Y values
         if(event.getAction() == MotionEvent.ACTION_DOWN) {
+            Log.d("hej", "clicked");
             if(checkBoundsNext(event.getX(), event.getY()) && currentPage < pages){
+               Log.d("hej", "next clicked");
                 currentPage++;
+                callback.updateResults();
             }else if(checkBoundsBack(event.getX(), event.getY()) && currentPage > 0) {
                 currentPage--;
+                Log.d("hej", "back clicked");
+                callback.updateResults();
             }
         }
 
@@ -123,7 +128,7 @@ public class PageIndicator extends View {
     }
 
     public void setCallback(Carousel callback) {
-
+        this.callback = callback;
     }
 
     public int getCurrentPage() {
