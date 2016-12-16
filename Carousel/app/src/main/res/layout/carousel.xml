@@ -17,9 +17,6 @@
                 android:layout_weight="1"
                 android:id="@+id/headerText"/>
 
-
-
-            <!-- TODO: Change to custom view -->
             <com.example.administrator.carousel.PageIndicator
                 android:id="@+id/pageIndicatorView"
                 android:layout_width="match_parent"
@@ -32,7 +29,7 @@
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="200dp"
             android:id="@+id/carouselItemLayout" />
 
 </merge>

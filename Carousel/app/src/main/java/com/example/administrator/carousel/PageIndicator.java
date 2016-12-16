@@ -23,14 +23,17 @@ import static android.graphics.Color.RED;
  * using two arrow buttons. Circles are used to show where user is positioned.
  */
 
-public class PageIndicator extends View implements View.OnClickListener {
+public class PageIndicator extends View {
 
+    Carousel callback;
     private Paint paint;
     private int radius;
     private int items;
-    private double pages;
+    private int pages;
     private ShapeDrawable next;
     private ShapeDrawable back;
+
+    private int currentPage = 0;
 
     public PageIndicator(Context context) {
         super(context);
@@ -84,7 +87,7 @@ public class PageIndicator extends View implements View.OnClickListener {
 
     public void setItems(int _items){
         this.items = _items;
-        pages = Math.ceil((double)items/4.0);
+        pages = (int) Math.ceil(items/4.0);
     }
 
     public int getItems(){
@@ -92,20 +95,13 @@ public class PageIndicator extends View implements View.OnClickListener {
     }
 
     @Override
-    public void onClick(View view) {
-        Toast.makeText(getContext(), "Du har klickat", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
     public boolean onTouchEvent(MotionEvent event) {
         // MotionEvent object holds X-Y values
         if(event.getAction() == MotionEvent.ACTION_DOWN) {
-            if(checkBoundsNext(event.getX(), event.getY())){
-                String text = "You click at x = " + event.getX() + " and y = " + event.getY();
-                Toast.makeText(getContext(), text, Toast.LENGTH_LONG).show();
-                onClick(this);
-            }else if(checkBoundsBack(event.getX(), event.getY())){
-                onClick(this);
+            if(checkBoundsNext(event.getX(), event.getY()) && currentPage < pages){
+                currentPage++;
+            }else if(checkBoundsBack(event.getX(), event.getY()) && currentPage > 0) {
+                currentPage--;
             }
         }
 
@@ -124,5 +120,13 @@ public class PageIndicator extends View implements View.OnClickListener {
             return true;
         }
         return false;
+    }
+
+    public void setCallback(Carousel callback) {
+
+    }
+
+    public int getCurrentPage() {
+        return currentPage;
     }
 }
