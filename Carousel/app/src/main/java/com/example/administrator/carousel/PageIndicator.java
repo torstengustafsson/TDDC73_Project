@@ -5,23 +5,32 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Rect;
 import android.graphics.Region;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.RectShape;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.Toast;
+
+import static android.graphics.Color.RED;
 
 /**
  * Handles the navigation of the carousel by allowing the user to move left and right
  * using two arrow buttons. Circles are used to show where user is positioned.
  */
 
-public class PageIndicator extends View {
+public class PageIndicator extends View implements View.OnClickListener {
 
     private Paint paint;
-    private Rect boundsRect;
-    private int width;
-    private int height;
+    private int radius;
+    private int items;
+    private double pages;
+    private ShapeDrawable next;
+    private ShapeDrawable back;
 
     public PageIndicator(Context context) {
         super(context);
@@ -44,16 +53,76 @@ public class PageIndicator extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         canvas.drawColor(Color.BLUE);
-        Log.i("PageIndicator", "width: " + getWidth() + " Height: " + getHeight());
+        Log.i("PageIndicator", "items: " + getItems());
         canvas.clipRect(0, 0, getWidth(), getHeight(), Region.Op.REPLACE);
-        canvas.drawCircle(getWidth()/2, getHeight()/2, 20, paint);
+        radius = getWidth()/20;
+        Log.i("PageIndicator", "Pages: " + pages);
+        for(int i = 0; i < pages; i++){
+            Log.i("PageIndicator", "Drawing circle " + pages);
+            canvas.drawCircle(((i+1)*radius*2.5f), getHeight()/2, radius, paint);
+        }
+
+        next.setBounds(getWidth()-getWidth()*2/10, getHeight()/3, getWidth()-getWidth()/10, getHeight()*2/3);
+        back.setBounds(getWidth()-getWidth()*7/20, getHeight()/3, getWidth()-getWidth()*5/20, getHeight()*2/3);
+
+        next.draw(canvas);
+        back.draw(canvas);
+
 
     }
 
     private void init(){
+        //setOnClickListener(this);
+
         paint = new Paint();
         paint.setColor(Color.GRAY);
-        boundsRect = new Rect();
+        radius = 20;
+        pages = 1;
+        next = new ShapeDrawable(new RectShape());
+        back = new ShapeDrawable(new RectShape());
     }
 
+    public void setItems(int _items){
+        this.items = _items;
+        pages = Math.ceil((double)items/4.0);
+    }
+
+    public int getItems(){
+        return items;
+    }
+
+    @Override
+    public void onClick(View view) {
+        Toast.makeText(getContext(), "Du har klickat", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        // MotionEvent object holds X-Y values
+        if(event.getAction() == MotionEvent.ACTION_DOWN) {
+            if(checkBoundsNext(event.getX(), event.getY())){
+                String text = "You click at x = " + event.getX() + " and y = " + event.getY();
+                Toast.makeText(getContext(), text, Toast.LENGTH_LONG).show();
+                onClick(this);
+            }else if(checkBoundsBack(event.getX(), event.getY())){
+                onClick(this);
+            }
+        }
+
+        return super.onTouchEvent(event);
+    }
+
+    public boolean checkBoundsNext(float x, float y){
+        if(x > next.getBounds().left && x < next.getBounds().right && y < next.getBounds().bottom && y > next.getBounds().top){
+            return true;
+        }
+        return false;
+    }
+
+    public boolean checkBoundsBack(float x, float y){
+        if(x > back.getBounds().left && x < back.getBounds().right && y < back.getBounds().bottom && y > back.getBounds().top){
+            return true;
+        }
+        return false;
+    }
 }
