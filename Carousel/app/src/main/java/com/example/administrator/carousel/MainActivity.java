@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // Demo function to show how you may bind url:s statically if you don't want to write an
-    // image retriever class (requires valid URL:s). Item is a container class used by Carousel
+    // image retriever class. Item is a container class used by Carousel
     // that holds a title and an image URL.
     private void initCarousel() {
         ArrayList<Item> exampleCarouselItems = new ArrayList<>();
