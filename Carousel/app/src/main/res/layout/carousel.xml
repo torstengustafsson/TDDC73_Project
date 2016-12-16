@@ -15,6 +15,7 @@
                 android:textStyle="bold"
                 android:layout_gravity="center"
                 android:layout_weight="1"
+                android:minHeight="20dp"
                 android:id="@+id/headerText"/>
 
 
@@ -24,7 +25,8 @@
                 android:id="@+id/pageIndicatorView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="2">
+                android:layout_weight="2"
+                android:minHeight="20dp">
             </com.example.administrator.carousel.PageIndicator>
 
         </LinearLayout>

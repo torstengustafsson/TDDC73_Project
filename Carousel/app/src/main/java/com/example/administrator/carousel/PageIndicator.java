@@ -7,7 +7,10 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Region;
 import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.ArcShape;
+import android.graphics.drawable.shapes.OvalShape;
 import android.graphics.drawable.shapes.RectShape;
+import android.graphics.drawable.shapes.Shape;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,7 +26,7 @@ import static android.graphics.Color.RED;
  * using two arrow buttons. Circles are used to show where user is positioned.
  */
 
-public class PageIndicator extends View implements View.OnClickListener {
+public class PageIndicator extends View{
 
     private Paint paint;
     private int radius;
@@ -73,10 +76,8 @@ public class PageIndicator extends View implements View.OnClickListener {
 
     private void init(){
         //setOnClickListener(this);
-
         paint = new Paint();
         paint.setColor(Color.GRAY);
-        radius = 20;
         pages = 1;
         next = new ShapeDrawable(new RectShape());
         back = new ShapeDrawable(new RectShape());
@@ -92,20 +93,11 @@ public class PageIndicator extends View implements View.OnClickListener {
     }
 
     @Override
-    public void onClick(View view) {
-        Toast.makeText(getContext(), "Du har klickat", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
     public boolean onTouchEvent(MotionEvent event) {
         // MotionEvent object holds X-Y values
         if(event.getAction() == MotionEvent.ACTION_DOWN) {
             if(checkBoundsNext(event.getX(), event.getY())){
-                String text = "You click at x = " + event.getX() + " and y = " + event.getY();
-                Toast.makeText(getContext(), text, Toast.LENGTH_LONG).show();
-                onClick(this);
             }else if(checkBoundsBack(event.getX(), event.getY())){
-                onClick(this);
             }
         }
 
