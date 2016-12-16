@@ -3,14 +3,14 @@
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="150dp"
         android:layout_gravity="top"
         android:contentDescription="hej"
         android:id="@+id/itemView_image" />
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_gravity="bottom"
         android:gravity="center"
         android:id="@+id/itemView_text"/>

@@ -19,6 +19,8 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import static android.graphics.Color.GRAY;
+import static android.graphics.Color.GREEN;
 import static android.graphics.Color.RED;
 
 /**
@@ -26,14 +28,18 @@ import static android.graphics.Color.RED;
  * using two arrow buttons. Circles are used to show where user is positioned.
  */
 
-public class PageIndicator extends View{
+public class PageIndicator extends View {
 
+
+    Carousel callback;
     private Paint paint;
     private int radius;
     private int items;
-    private double pages;
+    private int pages;
     private ShapeDrawable next;
     private ShapeDrawable back;
+
+    private int currentPage = 0;
 
     public PageIndicator(Context context) {
         super(context);
@@ -56,12 +62,14 @@ public class PageIndicator extends View{
     @Override
     protected void onDraw(Canvas canvas) {
         canvas.drawColor(Color.BLUE);
-        Log.i("PageIndicator", "items: " + getItems());
         canvas.clipRect(0, 0, getWidth(), getHeight(), Region.Op.REPLACE);
         radius = getWidth()/20;
-        Log.i("PageIndicator", "Pages: " + pages);
         for(int i = 0; i < pages; i++){
-            Log.i("PageIndicator", "Drawing circle " + pages);
+            if(currentPage == i){
+                paint.setColor(GREEN);
+            }else{
+                paint.setColor(GRAY);
+            }
             canvas.drawCircle(((i+1)*radius*2.5f), getHeight()/2, radius, paint);
         }
 
@@ -85,7 +93,7 @@ public class PageIndicator extends View{
 
     public void setItems(int _items){
         this.items = _items;
-        pages = Math.ceil((double)items/4.0);
+        pages = (int) Math.ceil(items/4.0);
     }
 
     public int getItems(){
@@ -96,8 +104,12 @@ public class PageIndicator extends View{
     public boolean onTouchEvent(MotionEvent event) {
         // MotionEvent object holds X-Y values
         if(event.getAction() == MotionEvent.ACTION_DOWN) {
-            if(checkBoundsNext(event.getX(), event.getY())){
-            }else if(checkBoundsBack(event.getX(), event.getY())){
+            if(checkBoundsNext(event.getX(), event.getY()) && currentPage < pages){
+                currentPage++;
+                invalidate();
+            }else if(checkBoundsBack(event.getX(), event.getY()) && currentPage > 0) {
+                currentPage--;
+                invalidate();
             }
         }
 
@@ -116,5 +128,13 @@ public class PageIndicator extends View{
             return true;
         }
         return false;
+    }
+
+    public void setCallback(Carousel callback) {
+
+    }
+
+    public int getCurrentPage() {
+        return currentPage;
     }
 }
