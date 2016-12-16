@@ -65,16 +65,12 @@ public class PageIndicator extends View {
         canvas.clipRect(0, 0, getWidth(), getHeight(), Region.Op.REPLACE);
         radius = getWidth()/20;
         for(int i = 0; i < pages; i++){
-            if(currentPage == i){
-                paint.setColor(GREEN);
-            }else{
-                paint.setColor(GRAY);
-            }
+            paint.setColor(currentPage == i ? GREEN : GRAY);
             canvas.drawCircle(((i+1)*radius*2.5f), getHeight()/2, radius, paint);
         }
 
-        next.setBounds(getWidth()-getWidth()*2/10, getHeight()/3, getWidth()-getWidth()/10, getHeight()*2/3);
-        back.setBounds(getWidth()-getWidth()*7/20, getHeight()/3, getWidth()-getWidth()*5/20, getHeight()*2/3);
+        next.setBounds(getWidth()-getWidth()*2/10, getHeight()/4, getWidth()-getWidth()/10, getHeight()*3/4);
+        back.setBounds(getWidth()-getWidth()*7/20, getHeight()/4, getWidth()-getWidth()*5/20, getHeight()*3/4);
 
         next.draw(canvas);
         back.draw(canvas);
@@ -94,6 +90,9 @@ public class PageIndicator extends View {
     public void setItems(int _items){
         this.items = _items;
         pages = (int) Math.ceil(items/4.0);
+        Log.i("PageIndicator", "Items: " + items);
+        Log.i("PageIndicator", "Pages: " + pages);
+
     }
 
     public int getItems(){
@@ -104,12 +103,15 @@ public class PageIndicator extends View {
     public boolean onTouchEvent(MotionEvent event) {
         // MotionEvent object holds X-Y values
         if(event.getAction() == MotionEvent.ACTION_DOWN) {
-            if(checkBoundsNext(event.getX(), event.getY()) && currentPage < pages){
+            Log.d("hej", "clicked");
+            if(checkBoundsNext(event.getX(), event.getY()) && currentPage < pages-1){
+               Log.d("hej", "next clicked");
                 currentPage++;
-                invalidate();
+                callback.updateResults();
             }else if(checkBoundsBack(event.getX(), event.getY()) && currentPage > 0) {
                 currentPage--;
-                invalidate();
+                Log.d("hej", "back clicked");
+                callback.updateResults();
             }
         }
 
@@ -131,7 +133,7 @@ public class PageIndicator extends View {
     }
 
     public void setCallback(Carousel callback) {
-
+        this.callback = callback;
     }
 
     public int getCurrentPage() {

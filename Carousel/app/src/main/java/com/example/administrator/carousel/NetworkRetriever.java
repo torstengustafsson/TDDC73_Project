@@ -43,7 +43,7 @@ class NetworkRetriever extends AsyncTask<String, Void, ArrayList<Item>> {
                 JSONArray jArr = jObj.getJSONArray("Search");
 
                 for(int i=0; i < Math.min(jArr.length(), maxResults); i++) {
-                    Log.i("NetworkRetriever", "1");
+                    Log.i("NetworkRetriever", "MaxResults="+maxResults);
                     JSONObject item = ((JSONObject) jArr.get(i));
                     Log.i("NetworkRetriever", "2");
                     String name = item.getString("Title");
@@ -52,6 +52,7 @@ class NetworkRetriever extends AsyncTask<String, Void, ArrayList<Item>> {
                     Log.i("NetworkRetriever", "" + name + " " + imageLink);
                     res.add(new Item(name, imageLink));
                 }
+                Log.i("NetworkRet", "Res: " + res.size());
             }
             catch (Exception e) {
                 throw new RuntimeException(e);

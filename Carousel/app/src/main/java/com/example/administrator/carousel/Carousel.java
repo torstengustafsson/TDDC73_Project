@@ -58,6 +58,7 @@ public class Carousel extends LinearLayout {
         layoutBottom = (LinearLayout) findViewById(R.id.carouselItemLayout);
         header = (TextView) findViewById(R.id.headerText);
         pageIndicator = (PageIndicator) findViewById(R.id.pageIndicatorView);
+        pageIndicator.setCallback(this);
 
         paint = new Paint();
     }
@@ -67,7 +68,7 @@ public class Carousel extends LinearLayout {
     }
 
     public void search(String _text) {
-        networkRetriever = new NetworkRetriever(this, imageDBURL, 10);
+        networkRetriever = new NetworkRetriever(this, imageDBURL, 16);
         networkRetriever.execute(_text.replaceAll(" ", "%20"));
     }
 
@@ -76,8 +77,15 @@ public class Carousel extends LinearLayout {
         updateItems(pageIndicator.getCurrentPage());
     }
 
+    public void updateResults() {
+        updateItems(pageIndicator.getCurrentPage());
+    }
+
     private void updateItems(int page) {
         Log.d("Carousel", "Updating items");
+
+        if(items == null) return;
+
         layoutBottom.removeAllViews();
         if (items.size() == 0) {
             Toast toast = Toast.makeText(getContext(), "Missing internet connection, please connect to internet and restart app.", Toast.LENGTH_LONG);
@@ -87,7 +95,8 @@ public class Carousel extends LinearLayout {
             return;
         }
         pageIndicator.setItems(items.size());
-        for (int i = 0; i < Math.min(items.size(), 4); i++) {
+        for (int i = 4*page; i < 4 * page + 4; i++) {
+            if(items.size() <= i) break;
             ItemView item = new ItemView(getContext(), items.get(i).name, items.get(i).imageUrl);
             LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,

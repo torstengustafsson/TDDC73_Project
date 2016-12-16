@@ -10,6 +10,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import static android.view.inputmethod.EditorInfo.IME_ACTION_SEARCH;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -24,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
 
         final EditText searchText = new EditText(this);
         searchText.setInputType(InputType.TYPE_CLASS_TEXT);
+        searchText.setImeOptions(IME_ACTION_SEARCH);
         searchText.setHint("e.g. 'star wars'");
 
         final Carousel carousel = new Carousel(this, "http://www.omdbapi.com/?s=");
