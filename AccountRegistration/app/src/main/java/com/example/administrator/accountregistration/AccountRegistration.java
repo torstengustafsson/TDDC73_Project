@@ -25,7 +25,7 @@ class AccountRegistration {
     ArrayList<Account> accounts;
 
     private Context context;
-    private static boolean isLoggedIn = false;
+    private static Account activeAccount = null;
 
     AccountRegistration(Context context) {
         this.context = context;
@@ -62,11 +62,12 @@ class AccountRegistration {
 
         login.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if( CheckAccountExist(
+                Toast.makeText(context, "Login successful!", Toast.LENGTH_SHORT).show();
+                activeAccount = CheckAccountExist(
                         usernameText.getText().toString(),
-                        passwordText.getText().toString()) ) {
-                    Toast.makeText(context, "Login successful!", Toast.LENGTH_SHORT).show();
-                    isLoggedIn = true;
+                        passwordText.getText().toString());
+                if(activeAccount != null) {
+                    ((MainActivity) context).loggedinText.setText("Logged in as: " + activeAccount.username);
                     popupWindow.dismiss();
                 }
                 else {
@@ -76,16 +77,16 @@ class AccountRegistration {
         });
     }
 
-    public static boolean IsLoggedIn() {
-        return isLoggedIn;
+    static boolean IsLoggedIn() {
+        return activeAccount != null;
     }
 
-    private boolean CheckAccountExist(String username, String password) {
+    private Account CheckAccountExist(String username, String password) {
         for(Account a : accounts) {
             if(a.username.equals(username) && a.password.equals(password)) {
-                return true;
+                return a;
             }
         }
-        return false;
+        return null;
     }
 }

@@ -13,14 +13,23 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="2"
+        android:layout_weight="6"
         android:text="Welcome to account registration demo! Create account or log in using menu in the top right corner. Then you may enter the 'my pages' page" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingBottom="10dp"
+        android:text="Logged in as: No one!"
+        android:id="@+id/loggedinText"/>
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:layout_weight="1" >
+        android:layout_weight="3" >
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
