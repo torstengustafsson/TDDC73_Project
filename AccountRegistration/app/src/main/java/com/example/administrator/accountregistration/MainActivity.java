@@ -8,11 +8,14 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
     AccountRegistration accountRegistration;
+
+    TextView loggedinText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +25,8 @@ public class MainActivity extends AppCompatActivity {
         accountRegistration = new AccountRegistration(this);
 
         Button myPages = (Button) findViewById(R.id.buttonMyPages);
+
+        loggedinText = (TextView) findViewById(R.id.loggedinText);
 
         myPages.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
