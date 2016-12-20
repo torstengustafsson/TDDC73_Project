@@ -2,6 +2,8 @@ package com.example.administrator.carousel;
 
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -28,6 +30,9 @@ public class PageIndicator extends View {
     private int pages;
     private ShapeDrawable next;
     private ShapeDrawable back;
+    private Bitmap bitmapNext;
+    private Bitmap bitmapBack;
+
 
     private int currentPage = 0;
 
@@ -62,8 +67,18 @@ public class PageIndicator extends View {
         next.setBounds(getWidth()-getWidth()*4/20, getHeight()/4, getWidth()-getWidth()/20, getHeight()*3/4);
         back.setBounds(getWidth()-getWidth()*8/20, getHeight()/4, getWidth()-getWidth()*5/20, getHeight()*3/4);
 
-        next.draw(canvas);
-        back.draw(canvas);
+        // "next" and "back" have the same height and width
+        int scale = Math.min(next.getBounds().width(), next.getBounds().height());
+
+        Bitmap bitmapNextCopy = bitmapNext.createScaledBitmap(bitmapNext, scale, scale, false);
+        Bitmap bitmapBackCopy = bitmapBack.createScaledBitmap(bitmapBack, scale, scale, false);
+
+
+        //next.draw(canvas);
+        //back.draw(canvas);
+
+        canvas.drawBitmap(bitmapNextCopy, next.getBounds().left, next.getBounds().top, paint);
+        canvas.drawBitmap(bitmapBackCopy, back.getBounds().left, back.getBounds().top, paint);
 
 
     }
@@ -74,6 +89,8 @@ public class PageIndicator extends View {
         pages = 1;
         next = new ShapeDrawable(new RectShape());
         back = new ShapeDrawable(new RectShape());
+        bitmapNext = BitmapFactory.decodeResource(getResources(), R.drawable.next);
+        bitmapBack = BitmapFactory.decodeResource(getResources(), R.drawable.back);
     }
 
     public void setItems(int _items){
