@@ -38,8 +38,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_NULL  ) {
-                    OMDBRetriever OMDBRetriever = new OMDBRetriever(getBaseContext(), carousel, 16);
-                    OMDBRetriever.execute(searchText.getText().toString().replaceAll(" ", "%20"));
+                    searchOMDB(searchText.getText().toString().replaceAll(" ", "%20"));
                     return true;
                 }
                 return false;
@@ -55,9 +54,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(layout);
     }
 
-    // Demo function to show how you may bind url:s statically if you don't want to write an
-    // image retriever class. Item is a container class used by Carousel
-    // that holds a title and an image URL.
+    /**
+     * Demo function to show how you may bind url:s statically if you don't want to write an
+     * image retriever class. Item is a container class used by Carousel
+     * that holds a title and an image URL.
+     */
     private void initCarousel() {
         ArrayList<Item> exampleCarouselItems = new ArrayList<>();
         exampleCarouselItems.add(new Item("Image 1", "http://www.w3schools.com/css/img_fjords.jpg") );
@@ -70,6 +71,14 @@ public class MainActivity extends AppCompatActivity {
 
         carousel.updateResults(exampleCarouselItems);
         carousel.setHeaderText("Some example images");
+    }
 
+    /**
+     * Creates a request to the OMDB api.
+     * OMDBRetriever then tells the carousel to update its values.
+     */
+    private void searchOMDB(String searchText) {
+        OMDBRetriever OMDBRetriever = new OMDBRetriever(getBaseContext(), carousel, 16);
+        OMDBRetriever.execute(searchText);
     }
 }

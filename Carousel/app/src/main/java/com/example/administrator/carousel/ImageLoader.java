@@ -1,6 +1,9 @@
-// This loader was taken directly from:
-// http://stackoverflow.com/questions/5776851/load-image-from-url
-// Only minimal changes have been made to fit our Carousel app
+/**
+ * This loader was taken directly from:
+ * http://stackoverflow.com/questions/5776851/load-image-from-url
+ * Only minimal changes have been made to fit our Carousel app
+ */
+
 
 package com.example.administrator.carousel;
 
