@@ -13,8 +13,8 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
+    Menu menu;
     AccountRegistration accountRegistration;
-
     TextView loggedinText;
 
     @Override
@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_main, menu);
+        this.menu = menu;
         return true;
     }
 

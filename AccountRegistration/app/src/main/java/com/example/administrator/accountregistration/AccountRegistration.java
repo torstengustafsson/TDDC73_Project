@@ -9,7 +9,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.PopupWindow;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -30,7 +29,7 @@ class AccountRegistration {
     AccountRegistration(Context context) {
         this.context = context;
         accounts = new ArrayList<>();
-        accounts.add(new Account("bob", "abc123"));
+        accounts.add(new Account("bob", "abc123")); // test account
     }
 
     public void SetViewLogin() {
@@ -63,12 +62,11 @@ class AccountRegistration {
         login.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Toast.makeText(context, "Login successful!", Toast.LENGTH_SHORT).show();
-                activeAccount = CheckAccountExist(
-                        usernameText.getText().toString(),
-                        passwordText.getText().toString());
-                if(activeAccount != null) {
-                    ((MainActivity) context).loggedinText.setText("Logged in as: " + activeAccount.username);
-                    popupWindow.dismiss();
+
+                String usernameString = usernameText.getText().toString();
+                String passwordString = passwordText.getText().toString();
+                if(loginAs(new Account(usernameString, passwordString))) {
+                    popupWindow.dismiss(); // success
                 }
                 else {
                     Toast.makeText(context, "Username and/or password did not match!", Toast.LENGTH_SHORT).show();
@@ -81,9 +79,15 @@ class AccountRegistration {
         return activeAccount != null;
     }
 
-    private Account CheckAccountExist(String username, String password) {
-        for(Account a : accounts) {
-            if(a.username.equals(username) && a.password.equals(password)) {
+    private boolean loginAs(Account a) {
+        ((MainActivity) context).loggedinText.setText("Logged in as: " + activeAccount.username);
+        activeAccount = CheckAccountExist(a);
+        return activeAccount != null;
+    }
+
+    private Account CheckAccountExist(Account a) {
+        for(Account account : accounts) {
+            if(a.username.equals(account.username) && a.password.equals(account.password)) {
                 return a;
             }
         }
