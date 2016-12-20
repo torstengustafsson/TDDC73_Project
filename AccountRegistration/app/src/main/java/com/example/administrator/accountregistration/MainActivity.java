@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.create_account:
-                setContentView(R.layout.createaccount_layout);
+                accountRegistration.SetViewCreateAccount();
                 break;
             case R.id.log_in:
                 accountRegistration.SetViewLogin();
