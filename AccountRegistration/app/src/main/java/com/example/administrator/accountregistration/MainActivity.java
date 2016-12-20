@@ -25,7 +25,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void EnterMyPages() {
-        Intent intent = new Intent(this, MyPagesActivity.class);
+        Intent intent = new Intent(this, AccountRegistrationActivity.class);
+        intent.putExtra("REQUEST", "CHECKLOGGEDIN");
         startActivity(intent);
     }
 
