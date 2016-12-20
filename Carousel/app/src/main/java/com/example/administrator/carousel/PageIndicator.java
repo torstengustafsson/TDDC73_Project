@@ -2,6 +2,8 @@ package com.example.administrator.carousel;
 
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -28,6 +30,9 @@ public class PageIndicator extends View {
     private int pages;
     private ShapeDrawable next;
     private ShapeDrawable back;
+    private Bitmap bitmapNext;
+    private Bitmap bitmapBack;
+
 
     private int currentPage = 0;
 
@@ -38,8 +43,7 @@ public class PageIndicator extends View {
         init();
     }
 
-    public PageIndicator(Context context, AttributeSet attrs)
-    {
+    public PageIndicator(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }
@@ -53,35 +57,47 @@ public class PageIndicator extends View {
     protected void onDraw(Canvas canvas) {
         canvas.drawColor(Color.BLUE);
         canvas.clipRect(0, 0, getWidth(), getHeight(), Region.Op.REPLACE);
-        int radius = Math.min(getWidth()/20, getHeight()/2);
-        for(int i = 0; i < pages; i++){
+        int radius = Math.min(getWidth() / 20, getHeight() / 2);
+        for (int i = 0; i < pages; i++) {
             paint.setColor(currentPage == i ? GREEN : GRAY);
-            canvas.drawCircle(((i+1)*radius*2.5f), getHeight()/2, radius, paint);
+            canvas.drawCircle(((i + 1) * radius * 2.5f), getHeight() / 2, radius, paint);
         }
 
-        next.setBounds(getWidth()-getWidth()*4/20, getHeight()/4, getWidth()-getWidth()/20, getHeight()*3/4);
-        back.setBounds(getWidth()-getWidth()*8/20, getHeight()/4, getWidth()-getWidth()*5/20, getHeight()*3/4);
+        next.setBounds(getWidth() - getWidth() * 4 / 20, getHeight() / 4, getWidth() - getWidth() / 20, getHeight() * 3 / 4);
+        back.setBounds(getWidth() - getWidth() * 8 / 20, getHeight() / 4, getWidth() - getWidth() * 5 / 20, getHeight() * 3 / 4);
 
-        next.draw(canvas);
-        back.draw(canvas);
+        // "next" and "back" have the same height and width
+        int scale = Math.min(next.getBounds().width(), next.getBounds().height());
+
+        Bitmap bitmapNextCopy = bitmapNext.createScaledBitmap(bitmapNext, scale, scale, true);
+        Bitmap bitmapBackCopy = bitmapBack.createScaledBitmap(bitmapBack, scale, scale, true);
+
+
+        //next.draw(canvas);
+        //back.draw(canvas);
+
+        canvas.drawBitmap(bitmapNextCopy, next.getBounds().left, next.getBounds().top, paint);
+        canvas.drawBitmap(bitmapBackCopy, back.getBounds().left, back.getBounds().top, paint);
 
 
     }
 
-    private void init(){
+    private void init() {
         paint = new Paint();
         paint.setColor(Color.GRAY);
         pages = 1;
         next = new ShapeDrawable(new RectShape());
         back = new ShapeDrawable(new RectShape());
+        bitmapNext = BitmapFactory.decodeResource(getResources(), R.drawable.next);
+        bitmapBack = BitmapFactory.decodeResource(getResources(), R.drawable.back);
     }
 
-    public void setItems(int _items){
+    public void setItems(int _items) {
         this.items = _items;
-        pages = (int) Math.ceil(items/4.0);
+        pages = (int) Math.ceil(items / 4.0);
     }
 
-    public int getItems(){
+    public int getItems() {
         return items;
     }
 
@@ -93,11 +109,11 @@ public class PageIndicator extends View {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         // MotionEvent object holds X-Y values
-        if(event.getAction() == MotionEvent.ACTION_DOWN) {
-            if(checkBoundsNext(event.getX(), event.getY()) && currentPage < pages-1){
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            if (checkBoundsNext(event.getX(), event.getY()) && currentPage < pages - 1) {
                 currentPage++;
                 callback.updateResults();
-            }else if(checkBoundsBack(event.getX(), event.getY()) && currentPage > 0) {
+            } else if (checkBoundsBack(event.getX(), event.getY()) && currentPage > 0) {
                 currentPage--;
                 callback.updateResults();
             }
@@ -106,15 +122,15 @@ public class PageIndicator extends View {
         return super.onTouchEvent(event);
     }
 
-    public boolean checkBoundsNext(float x, float y){
-        if(x > next.getBounds().left && x < next.getBounds().right && y < next.getBounds().bottom && y > next.getBounds().top){
+    public boolean checkBoundsNext(float x, float y) {
+        if (x > next.getBounds().left && x < next.getBounds().right && y < next.getBounds().bottom && y > next.getBounds().top) {
             return true;
         }
         return false;
     }
 
-    public boolean checkBoundsBack(float x, float y){
-        if(x > back.getBounds().left && x < back.getBounds().right && y < back.getBounds().bottom && y > back.getBounds().top){
+    public boolean checkBoundsBack(float x, float y) {
+        if (x > back.getBounds().left && x < back.getBounds().right && y < back.getBounds().bottom && y > back.getBounds().top) {
             return true;
         }
         return false;

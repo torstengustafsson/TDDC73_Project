@@ -77,7 +77,11 @@ public class Carousel extends LinearLayout {
     }
 
     private void updateItems(int page, boolean isOnline) {
-        if(items == null) return;
+        if (items == null) {
+            pageIndicator.setItems(1);
+            pageIndicator.invalidate();
+            return;
+        }
 
         layoutBottom.removeAllViews();
         if (items.size() == 0) {
@@ -85,7 +89,7 @@ public class Carousel extends LinearLayout {
                     (isOnline ? "No results found" : "Missing internet connection, please reconnect to internet and search again."),
                     Toast.LENGTH_SHORT);
             TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
-            if( v != null) v.setGravity(Gravity.CENTER);
+            if (v != null) v.setGravity(Gravity.CENTER);
             toast.show();
             return;
         }
