@@ -12,10 +12,14 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
+    AccountRegistration accountRegistration;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        accountRegistration = new AccountRegistration(this);
 
         Button myPages = (Button) findViewById(R.id.buttonMyPages);
 
@@ -50,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
                 setContentView(R.layout.createaccount_layout);
                 break;
             case R.id.log_in:
-                setContentView(R.layout.login_layout);
+                accountRegistration.SetViewLogin();
                 break;
         }
         return super.onOptionsItemSelected(item);
