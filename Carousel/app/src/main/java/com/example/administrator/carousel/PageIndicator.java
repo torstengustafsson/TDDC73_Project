@@ -59,8 +59,8 @@ public class PageIndicator extends View {
             canvas.drawCircle(((i+1)*radius*2.5f), getHeight()/2, radius, paint);
         }
 
-        next.setBounds(getWidth()-getWidth()*2/10, getHeight()/4, getWidth()-getWidth()/10, getHeight()*3/4);
-        back.setBounds(getWidth()-getWidth()*7/20, getHeight()/4, getWidth()-getWidth()*5/20, getHeight()*3/4);
+        next.setBounds(getWidth()-getWidth()*4/20, getHeight()/4, getWidth()-getWidth()/20, getHeight()*3/4);
+        back.setBounds(getWidth()-getWidth()*8/20, getHeight()/4, getWidth()-getWidth()*5/20, getHeight()*3/4);
 
         next.draw(canvas);
         back.draw(canvas);
