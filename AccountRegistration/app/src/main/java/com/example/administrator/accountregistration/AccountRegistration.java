@@ -12,6 +12,7 @@ import android.widget.PopupWindow;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.StringTokenizer;
 
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 
@@ -33,11 +34,59 @@ class AccountRegistration {
     }
 
     public void SetViewLogin() {
+
+        if(activeAccount != null) {
+            logout();
+        }
+        else {
+            // Initialize a new instance of LayoutInflater service
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(LAYOUT_INFLATER_SERVICE);
+
+            // Inflate the custom layout/view
+            View customView = inflater.inflate(R.layout.login_layout, null);
+
+            // Initialize a new instance of popup window
+            final PopupWindow popupWindow = new PopupWindow(
+                    customView,
+                    ActionBar.LayoutParams.WRAP_CONTENT,
+                    ActionBar.LayoutParams.WRAP_CONTENT
+            );
+
+            // Set an elevation value for popup window
+            // Call requires API level 21
+            if (Build.VERSION.SDK_INT >= 21) {
+                popupWindow.setElevation(50.0f);
+            }
+
+            popupWindow.setFocusable(true);
+            popupWindow.showAtLocation(customView, Gravity.CENTER, 0, 0);
+
+            final EditText usernameText = (EditText) customView.findViewById(R.id.loginUsername);
+            final EditText passwordText = (EditText) customView.findViewById(R.id.loginPassword);
+            Button login = (Button) customView.findViewById(R.id.loginButton);
+
+            login.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    String usernameString = usernameText.getText().toString();
+                    String passwordString = passwordText.getText().toString();
+                    if (loginAs(new Account(usernameString, passwordString))) {
+                        Toast.makeText(context, "Login successful!", Toast.LENGTH_SHORT).show();
+                        popupWindow.dismiss(); // success
+                    } else {
+                        Toast.makeText(context, "Username and/or password did not match!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+        }
+    }
+
+
+    public void SetViewCreateAccount() {
         // Initialize a new instance of LayoutInflater service
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(LAYOUT_INFLATER_SERVICE);
 
         // Inflate the custom layout/view
-        View customView = inflater.inflate(R.layout.login_layout, null);
+        View customView = inflater.inflate(R.layout.createaccount_layout, null);
 
         // Initialize a new instance of popup window
         final PopupWindow popupWindow = new PopupWindow(
@@ -48,41 +97,57 @@ class AccountRegistration {
 
         // Set an elevation value for popup window
         // Call requires API level 21
-        if(Build.VERSION.SDK_INT>=21){
+        if (Build.VERSION.SDK_INT >= 21) {
             popupWindow.setElevation(50.0f);
         }
 
         popupWindow.setFocusable(true);
-        popupWindow.showAtLocation(customView, Gravity.CENTER,0,0);
+        popupWindow.showAtLocation(customView, Gravity.CENTER, 0, 0);
 
-        final EditText usernameText = (EditText) customView.findViewById(R.id.loginUsername);
-        final EditText passwordText = (EditText) customView.findViewById(R.id.loginPassword);
-        Button login = (Button) customView.findViewById(R.id.loginButton);
+        Button create = (Button) customView.findViewById(R.id.createAccount);
+        final EditText nameField = (EditText) customView.findViewById(R.id.inputUserName);
+        final EditText pswrdField = (EditText) customView.findViewById(R.id.inputPasswordFirst);
+        final EditText pswrdReField = (EditText) customView.findViewById(R.id.inputPasswordRepeat);
 
-        login.setOnClickListener(new View.OnClickListener() {
+        create.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Toast.makeText(context, "Login successful!", Toast.LENGTH_SHORT).show();
+                String name = nameField.getText().toString();
+                String pswrd = pswrdField.getText().toString();
+                String pswrdRe = pswrdReField.getText().toString();
 
-                String usernameString = usernameText.getText().toString();
-                String passwordString = passwordText.getText().toString();
-                if(loginAs(new Account(usernameString, passwordString))) {
-                    popupWindow.dismiss(); // success
-                }
-                else {
-                    Toast.makeText(context, "Username and/or password did not match!", Toast.LENGTH_SHORT).show();
+                if (inputCorrect(name, pswrd, pswrdRe)) {
+                    if (pswrd.equals(pswrdRe)) {
+                        createAccount(name, pswrd);
+                        Toast.makeText(context, "Account created", Toast.LENGTH_SHORT);
+                        popupWindow.dismiss();
+                    } else {
+                        Toast.makeText(context, "Unequal passwords, retype, idiot.", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });
     }
+
 
     static boolean IsLoggedIn() {
         return activeAccount != null;
     }
 
     private boolean loginAs(Account a) {
-        ((MainActivity) context).loggedinText.setText("Logged in as: " + activeAccount.username);
         activeAccount = CheckAccountExist(a);
-        return activeAccount != null;
+        if(activeAccount != null) {
+            ((MainActivity) context).setLoggedinText(a.username);
+            ((MainActivity) context).setMenuLoggedIn(true);
+            return true;
+        }
+        ((MainActivity) context).setMenuLoggedIn(false);
+        return false;
+    }
+
+    private void logout() {
+        activeAccount = null;
+        ((MainActivity) context).setLoggedinText("No One!");
+        ((MainActivity) context).setMenuLoggedIn(false);
     }
 
     private Account CheckAccountExist(Account a) {
@@ -92,5 +157,17 @@ class AccountRegistration {
             }
         }
         return null;
+    }
+
+    private boolean inputCorrect(String name, String pswrd, String pswrdRe){
+        if(name.equals(null) || pswrd.equals(null) || pswrdRe.equals(null)){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
+    private void createAccount(String name, String pswrd) {
+        accounts.add(new Account(name, pswrd));
     }
 }

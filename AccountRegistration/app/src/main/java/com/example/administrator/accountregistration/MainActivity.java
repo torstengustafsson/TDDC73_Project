@@ -23,11 +23,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         accountRegistration = new AccountRegistration(this);
-
         Button myPages = (Button) findViewById(R.id.buttonMyPages);
-
-        loggedinText = (TextView) findViewById(R.id.loggedinText);
-
         myPages.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
             EnterMyPages();
@@ -45,6 +41,17 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void setLoggedinText(String username) {
+
+        loggedinText = (TextView) findViewById(R.id.loggedinText);
+        loggedinText.setText("Logged in as: " + username);
+    }
+
+    public void setMenuLoggedIn(boolean loggedIn) {
+        MenuItem loginItem = menu.findItem(R.id.menuLogin);
+        loginItem.setTitle(loggedIn ? "Log Out" : "Log In");
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -56,10 +63,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
-            case R.id.create_account:
-                setContentView(R.layout.createaccount_layout);
+            case R.id.menuCreateAccount:
+                accountRegistration.SetViewCreateAccount();
                 break;
-            case R.id.log_in:
+            case R.id.menuLogin:
                 accountRegistration.SetViewLogin();
                 break;
         }
