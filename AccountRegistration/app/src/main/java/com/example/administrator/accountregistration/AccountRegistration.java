@@ -31,55 +31,58 @@ class AccountRegistration {
     AccountRegistration(Context context) {
         this.context = context;
         accounts = new ArrayList<>();
-        accounts.add(new Account("bob", "abc123"));
+        accounts.add(new Account("bob", "abc123")); // test account
     }
 
+
     public void SetViewLogin(String name, String pswrd) {
-        // Initialize a new instance of LayoutInflater service
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(LAYOUT_INFLATER_SERVICE);
 
-        // Inflate the custom layout/view
-        View customView = inflater.inflate(R.layout.login_layout, null);
+        if (activeAccount != null) {
+            logout();
+        } else {
+            // Initialize a new instance of LayoutInflater service
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(LAYOUT_INFLATER_SERVICE);
 
-        // Initialize a new instance of popup window
-        final PopupWindow popupWindow = new PopupWindow(
-                customView,
-                ActionBar.LayoutParams.WRAP_CONTENT,
-                ActionBar.LayoutParams.WRAP_CONTENT
-        );
+            // Inflate the custom layout/view
+            View customView = inflater.inflate(R.layout.login_layout, null);
 
-        // Set an elevation value for popup window
-        // Call requires API level 21
-        if (Build.VERSION.SDK_INT >= 21) {
-            popupWindow.setElevation(50.0f);
-        }
+            // Initialize a new instance of popup window
+            final PopupWindow popupWindow = new PopupWindow(
+                    customView,
+                    ActionBar.LayoutParams.WRAP_CONTENT,
+                    ActionBar.LayoutParams.WRAP_CONTENT
+            );
 
-        popupWindow.setFocusable(true);
-        popupWindow.showAtLocation(customView, Gravity.CENTER, 0, 0);
-
-        final EditText usernameText = (EditText) customView.findViewById(R.id.loginUsername);
-        final EditText passwordText = (EditText) customView.findViewById(R.id.loginPassword);
-        Button login = (Button) customView.findViewById(R.id.loginButton);
-
-        if(name != null && pswrd != null){
-            usernameText.setText(name);
-            passwordText.setText(pswrd);
-        }
-
-        login.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Toast.makeText(context, "Login successful!", Toast.LENGTH_SHORT).show();
-                activeAccount = CheckAccountExist(
-                        usernameText.getText().toString(),
-                        passwordText.getText().toString());
-                if (activeAccount != null) {
-                    ((MainActivity) context).loggedinText.setText("Logged in as: " + activeAccount.username);
-                    popupWindow.dismiss();
-                } else {
-                    Toast.makeText(context, "Username and/or password did not match!", Toast.LENGTH_SHORT).show();
-                }
+            // Set an elevation value for popup window
+            // Call requires API level 21
+            if (Build.VERSION.SDK_INT >= 21) {
+                popupWindow.setElevation(50.0f);
             }
-        });
+
+            popupWindow.setFocusable(true);
+            popupWindow.showAtLocation(customView, Gravity.CENTER, 0, 0);
+
+            final EditText usernameText = (EditText) customView.findViewById(R.id.loginUsername);
+            final EditText passwordText = (EditText) customView.findViewById(R.id.loginPassword);
+            Button login = (Button) customView.findViewById(R.id.loginButton);
+
+            if (name != null && pswrd != null) {
+                usernameText.setText(name);
+                passwordText.setText(pswrd);
+            }
+            login.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    String usernameString = usernameText.getText().toString();
+                    String passwordString = passwordText.getText().toString();
+                    if (loginAs(new Account(usernameString, passwordString))) {
+                        Toast.makeText(context, "Login successful!", Toast.LENGTH_SHORT).show();
+                        popupWindow.dismiss(); // success
+                    } else {
+                        Toast.makeText(context, "Username and/or password did not match!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+        }
     }
 
     public void SetViewLogin() {
@@ -147,9 +150,26 @@ class AccountRegistration {
         return activeAccount != null;
     }
 
-    private Account CheckAccountExist(String username, String password) {
-        for (Account a : accounts) {
-            if (a.username.equals(username) && a.password.equals(password)) {
+    private boolean loginAs(Account a) {
+        activeAccount = CheckAccountExist(a);
+        if (activeAccount != null) {
+            ((MainActivity) context).setLoggedinText(a.username);
+            ((MainActivity) context).setMenuLoggedIn(true);
+            return true;
+        }
+        ((MainActivity) context).setMenuLoggedIn(false);
+        return false;
+    }
+
+    private void logout() {
+        activeAccount = null;
+        ((MainActivity) context).setLoggedinText("No One!");
+        ((MainActivity) context).setMenuLoggedIn(false);
+    }
+
+    private Account CheckAccountExist(Account a) {
+        for (Account account : accounts) {
+            if (a.username.equalsIgnoreCase(account.username) && a.password.equals(account.password)) {
                 return a;
             }
         }
