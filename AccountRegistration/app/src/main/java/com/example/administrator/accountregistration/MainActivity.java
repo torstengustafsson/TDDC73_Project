@@ -8,6 +8,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -26,9 +27,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void EnterMyPages() {
-        Intent intent = new Intent(this, AccountRegistrationActivity.class);
-        intent.putExtra("REQUEST", "CHECKLOGGEDIN");
-        startActivity(intent);
+        if(AccountRegistration.IsLoggedIn()) {
+            Intent intent = new Intent(this, MyPagesActivity.class);
+            startActivity(intent);
+        }
+        else {
+            Toast.makeText(this, "You must log in first!", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
