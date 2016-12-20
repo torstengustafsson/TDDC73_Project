@@ -9,12 +9,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.PopupWindow;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.StringTokenizer;
 
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
+import static android.graphics.Color.RED;
 
 /**
  * Activity starts whenever something account-related is required
@@ -33,7 +34,7 @@ class AccountRegistration {
         accounts.add(new Account("bob", "abc123"));
     }
 
-    public void SetViewLogin() {
+    public void SetViewLogin(String name, String pswrd) {
         // Initialize a new instance of LayoutInflater service
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(LAYOUT_INFLATER_SERVICE);
 
@@ -60,6 +61,11 @@ class AccountRegistration {
         final EditText passwordText = (EditText) customView.findViewById(R.id.loginPassword);
         Button login = (Button) customView.findViewById(R.id.loginButton);
 
+        if(name != null && pswrd != null){
+            usernameText.setText(name);
+            passwordText.setText(pswrd);
+        }
+
         login.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Toast.makeText(context, "Login successful!", Toast.LENGTH_SHORT).show();
@@ -76,13 +82,17 @@ class AccountRegistration {
         });
     }
 
+    public void SetViewLogin() {
+        SetViewLogin(null, null);
+    }
+
 
     public void SetViewCreateAccount() {
         // Initialize a new instance of LayoutInflater service
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(LAYOUT_INFLATER_SERVICE);
 
         // Inflate the custom layout/view
-        View customView = inflater.inflate(R.layout.createaccount_layout, null);
+        final View customView = inflater.inflate(R.layout.createaccount_layout, null);
 
         // Initialize a new instance of popup window
         final PopupWindow popupWindow = new PopupWindow(
@@ -104,6 +114,9 @@ class AccountRegistration {
         final EditText nameField = (EditText) customView.findViewById(R.id.inputUserName);
         final EditText pswrdField = (EditText) customView.findViewById(R.id.inputPasswordFirst);
         final EditText pswrdReField = (EditText) customView.findViewById(R.id.inputPasswordRepeat);
+        final TextView usrName = (TextView) customView.findViewById(R.id.enterUsername);
+        final TextView psrdView = (TextView) customView.findViewById(R.id.enterPassword);
+        final TextView pswrdReView = (TextView) customView.findViewById(R.id.enterPasswordRepeat);
 
         create.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -114,11 +127,16 @@ class AccountRegistration {
                 if (inputCorrect(name, pswrd, pswrdRe)) {
                     if (pswrd.equals(pswrdRe)) {
                         createAccount(name, pswrd);
-                        Toast.makeText(context, "Account created", Toast.LENGTH_SHORT);
+                        Toast.makeText(context, "Account created", Toast.LENGTH_SHORT).show();
                         popupWindow.dismiss();
+                        SetViewLogin(name, pswrd);
                     } else {
-                        Toast.makeText(context, "Unequal passwords, retype, idiot.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "Password doesn't match", Toast.LENGTH_SHORT).show();
                     }
+                } else {
+                    usrName.setBackgroundColor(RED);
+                    psrdView.setBackgroundColor(RED);
+                    pswrdReView.setBackgroundColor(RED);
                 }
             }
         });
@@ -138,12 +156,19 @@ class AccountRegistration {
         return null;
     }
 
-    private boolean inputCorrect(String name, String pswrd, String pswrdRe){
-        if(name.equals(null) || pswrd.equals(null) || pswrdRe.equals(null)){
+    private boolean inputCorrect(String name, String pswrd, String pswrdRe) {
+        if (name.isEmpty() || pswrd.isEmpty() || pswrdRe.isEmpty()) {
+            Toast.makeText(context, "Invalid input", Toast.LENGTH_SHORT).show();
             return false;
-        }else{
-            return true;
+        } else {
+            for (int i = 0; i < accounts.size(); i++) {
+                if (accounts.get(i).username.equalsIgnoreCase(name)) {
+                    Toast.makeText(context, "Username is already taken", Toast.LENGTH_SHORT).show();
+                    return false;
+                }
+            }
         }
+        return true;
     }
 
     private void createAccount(String name, String pswrd) {
