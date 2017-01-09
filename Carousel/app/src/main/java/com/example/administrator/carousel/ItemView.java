@@ -17,7 +17,7 @@ public class ItemView extends LinearLayout {
 
     public ItemView(Context context, String nameText, String urlText) {
         super(context);
-        setPadding(10, 10, 10 ,10);
+        setPadding(10, 10, 10, 10);
         setOrientation(VERTICAL);
 
         LayoutInflater inflater = (LayoutInflater) context
@@ -30,7 +30,7 @@ public class ItemView extends LinearLayout {
         name.setText(nameText);
         image = (ImageView) findViewById(R.id.itemView_image);
         // OMDB uses the string 'N/A' to represent no image found. May be different for others.
-        if(!urlText.equals("N/A"))
+        if (!urlText.equals("N/A"))
             new ImageLoader(context, image, urlText, this).execute();
     }
 }
