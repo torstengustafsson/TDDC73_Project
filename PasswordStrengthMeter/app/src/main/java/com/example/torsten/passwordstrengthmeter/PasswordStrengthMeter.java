@@ -24,6 +24,10 @@ public class PasswordStrengthMeter extends LinearLayout {
     TextView strengthText;
     private ProgressBar strengthBar;
 
+    private PasswordCalculator calculator;
+    private PasswordLevelListener listener;
+
+
     public PasswordStrengthMeter(Context context) {
         super(context);
 
@@ -48,7 +52,7 @@ public class PasswordStrengthMeter extends LinearLayout {
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {} // Not used
             public void onTextChanged(CharSequence s, int start,
                                       int before, int count) {
-                checkStrength(pwField.getText().toString());
+                calculator.checkStrength(pwField.getText().toString());
             }
         });
 
@@ -84,37 +88,18 @@ public class PasswordStrengthMeter extends LinearLayout {
         addView(bottomLayout);
     }
 
+    public void setPasswordCalculator(PasswordCalculator pc) {
+        this.calculator = pc;
+    }
 
-    /**
-     * Evaluates the strength of the password
-     * Minimum of 8 digits
-     * Password gets stronger if password contains:
-     *  - letters and numbers
-     *  - Uppercase and lowercase letters
-     *  - Special characters
-     */
-    private void checkStrength(String text) {
-        if(text.length() < 8) {
-            setStrength(0);
-            return;
-        }
-
-        boolean containsDigits = text.matches(".*\\w+.*");
-        boolean containsNumbers = text.matches(".*\\d+.*");
-        boolean hasUppercase = !text.equals(text.toLowerCase());
-        boolean hasLowercase = !text.equals(text.toUpperCase());
-
-        int digitsAndNumbers = containsDigits && containsNumbers ? 1 : 0;
-        int upperAndLower = hasUppercase && hasLowercase ? 1 : 0;
-        int hasSpecial = !text.matches("[A-Za-z0-9 ]*") ? 1 : 0;
-
-        setStrength(1 + digitsAndNumbers + upperAndLower + hasSpecial);
+    public void setOnPasswordLevelChangeListener(PasswordLevelListener pll) {
+        listener = pll;
     }
 
     /**
      * Sets the views to show the current password strength
      */
-    private void setStrength(int val) {
+    protected void setStrength(int val) {
         // limit val to be in the range 0 - 4
         val = Math.min(Math.max(val, 0), 4);
 
@@ -133,5 +118,8 @@ public class PasswordStrengthMeter extends LinearLayout {
         strengthBar.setProgress(val * 25);
         strengthBar.getProgressDrawable().setColorFilter(colors[val], android.graphics.PorterDuff.Mode.SRC_IN);
 
+        if(listener != null) {
+            listener.onPasswordLevelChange(val);
+        }
     }
 }
