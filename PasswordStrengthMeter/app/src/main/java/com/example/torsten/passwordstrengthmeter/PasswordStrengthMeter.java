@@ -48,8 +48,12 @@ public class PasswordStrengthMeter extends LinearLayout {
 
         // Listener to update password strength views
         pwField.addTextChangedListener(new TextWatcher() {
-            public void afterTextChanged(Editable s) {} // Not used
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {} // Not used
+            public void afterTextChanged(Editable s) {
+            } // Not used
+
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            } // Not used
+
             public void onTextChanged(CharSequence s, int start,
                                       int before, int count) {
                 calculator.checkStrength(pwField.getText().toString());
@@ -110,7 +114,6 @@ public class PasswordStrengthMeter extends LinearLayout {
                 Color.parseColor("#00CCCC"),
                 Color.parseColor("#00FF00")
         };
-        int color = val == 0 ? Color.GRAY : val == 1 ? Color.RED : val == 2 ? Color.CYAN : val == 3 ? Color.BLUE : Color.GREEN;
 
         strengthText.setText(val == 0 ? "Too Short" : val == 1 ? "Weak" : val == 2 ? "Fair" : val == 3 ? "Good" : "Strong");
         strengthText.setTextColor(colors[val]);

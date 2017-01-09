@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+
 import java.io.BufferedInputStream;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -36,7 +37,7 @@ class OMDBRetriever extends AsyncTask<String, Void, ArrayList<Item>> {
 
         searchString = strings[0];
 
-        if(strings[0].equals("")) return res; // We may get error when asking for an empty string
+        if (strings[0].equals("")) return res; // We may get error when asking for an empty string
 
         int page = 0;
         while (true) {
@@ -51,7 +52,8 @@ class OMDBRetriever extends AsyncTask<String, Void, ArrayList<Item>> {
                     String resultString = s.hasNext() ? s.next() : "";
                     JSONObject jObj = new JSONObject(resultString);
 
-                    if(jObj.getString("Response").equals("False") || res.size() >= maxResults) break;
+                    if (jObj.getString("Response").equals("False") || res.size() >= maxResults)
+                        break;
 
                     JSONArray jArr = jObj.getJSONArray("Search");
 
@@ -67,7 +69,7 @@ class OMDBRetriever extends AsyncTask<String, Void, ArrayList<Item>> {
                 } finally {
                     urlConnection.disconnect();
                 }
-            }catch(Exception e){
+            } catch (Exception e) {
                 return res;
             }
         }

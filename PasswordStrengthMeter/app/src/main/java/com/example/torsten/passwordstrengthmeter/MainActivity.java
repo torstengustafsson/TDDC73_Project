@@ -1,7 +1,7 @@
 package com.example.torsten.passwordstrengthmeter;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
                 ViewGroup.LayoutParams.WRAP_CONTENT
         ));
         layout.setOrientation(LinearLayout.VERTICAL);
-        layout.setPadding( 64, 64, 64, 64);
+        layout.setPadding(64, 64, 64, 64);
 
         TextView text = new TextView(this);
         text.setText("Enter password:");

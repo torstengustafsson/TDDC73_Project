@@ -11,7 +11,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
-import android.telecom.Call;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
@@ -24,13 +23,11 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import java.io.InputStream;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Created by Sergey Shustikov (pandarium.shustikov@gmail.com) at 2015.
  */
-public class ImageLoader extends AsyncTask<String, Void, Bitmap>
-{
+public class ImageLoader extends AsyncTask<String, Void, Bitmap> {
     public static final int ANIMATION_DURATION = 0;
     private final ImageView mDestination, mFakeForError;
     private final String mUrl;
@@ -38,31 +35,25 @@ public class ImageLoader extends AsyncTask<String, Void, Bitmap>
 
     private ItemView callback;
 
-    private Animation.AnimationListener mOutAnimationListener = new Animation.AnimationListener()
-    {
+    private Animation.AnimationListener mOutAnimationListener = new Animation.AnimationListener() {
         @Override
-        public void onAnimationStart(Animation animation)
-        {
+        public void onAnimationStart(Animation animation) {
 
         }
 
         @Override
-        public void onAnimationEnd(Animation animation)
-        {
+        public void onAnimationEnd(Animation animation) {
             mProgressBar.setVisibility(View.GONE);
         }
 
         @Override
-        public void onAnimationRepeat(Animation animation)
-        {
+        public void onAnimationRepeat(Animation animation) {
 
         }
     };
-    private Animation.AnimationListener mInAnimationListener = new Animation.AnimationListener()
-    {
+    private Animation.AnimationListener mInAnimationListener = new Animation.AnimationListener() {
         @Override
-        public void onAnimationStart(Animation animation)
-        {
+        public void onAnimationStart(Animation animation) {
             if (isBitmapSet)
                 mDestination.setVisibility(View.VISIBLE);
             else
@@ -70,21 +61,18 @@ public class ImageLoader extends AsyncTask<String, Void, Bitmap>
         }
 
         @Override
-        public void onAnimationEnd(Animation animation)
-        {
+        public void onAnimationEnd(Animation animation) {
 
         }
 
         @Override
-        public void onAnimationRepeat(Animation animation)
-        {
+        public void onAnimationRepeat(Animation animation) {
 
         }
     };
     private boolean isBitmapSet;
 
-    public ImageLoader(Context context, ImageView destination, String url, ItemView callback)
-    {
+    public ImageLoader(Context context, ImageView destination, String url, ItemView callback) {
         mDestination = destination;
         mUrl = url;
         ViewGroup parent = (ViewGroup) destination.getParent();
@@ -110,8 +98,7 @@ public class ImageLoader extends AsyncTask<String, Void, Bitmap>
         this.callback = callback;
     }
 
-    protected Bitmap doInBackground(String... urls)
-    {
+    protected Bitmap doInBackground(String... urls) {
         String urlDisplay = mUrl;
         Bitmap bitmap = null;
         try {
@@ -124,8 +111,7 @@ public class ImageLoader extends AsyncTask<String, Void, Bitmap>
         return bitmap;
     }
 
-    protected void onPostExecute(Bitmap result)
-    {
+    protected void onPostExecute(Bitmap result) {
         AlphaAnimation in = new AlphaAnimation(0f, 1f);
         AlphaAnimation out = new AlphaAnimation(1f, 0f);
         in.setDuration(ANIMATION_DURATION * 2);
@@ -142,6 +128,7 @@ public class ImageLoader extends AsyncTask<String, Void, Bitmap>
         }
         mProgressBar.startAnimation(out);
     }
+
     public int dpToPx(int dp) {
         DisplayMetrics displayMetrics = mDestination.getContext().getResources().getDisplayMetrics();
         int px = Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));

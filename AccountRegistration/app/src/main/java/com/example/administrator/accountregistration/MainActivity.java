@@ -26,17 +26,16 @@ public class MainActivity extends AppCompatActivity {
         Button myPages = (Button) findViewById(R.id.buttonMyPages);
         myPages.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-            EnterMyPages();
+                EnterMyPages();
             }
         });
     }
 
     private void EnterMyPages() {
-        if(AccountRegistration.IsLoggedIn()) {
+        if (AccountRegistration.IsLoggedIn()) {
             Intent intent = new Intent(this, MyPagesActivity.class);
             startActivity(intent);
-        }
-        else {
+        } else {
             Toast.makeText(this, "You must log in first!", Toast.LENGTH_SHORT).show();
         }
     }
@@ -62,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.menuCreateAccount:
                 accountRegistration.SetViewCreateAccount();
                 break;

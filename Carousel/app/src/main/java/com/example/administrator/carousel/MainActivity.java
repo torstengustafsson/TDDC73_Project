@@ -1,8 +1,8 @@
 package com.example.administrator.carousel;
 
 import android.content.Context;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 import android.view.KeyEvent;
 import android.view.inputmethod.EditorInfo;
@@ -39,10 +39,10 @@ public class MainActivity extends AppCompatActivity {
         searchText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_NULL  ) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_NULL) {
                     searchOMDB(searchText.getText().toString().replaceAll(" ", "%20"));
                     searchText.clearFocus();
-                    InputMethodManager in = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                    InputMethodManager in = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     in.hideSoftInputFromWindow(searchText.getWindowToken(), 0);
                     return true;
                 }
@@ -66,13 +66,13 @@ public class MainActivity extends AppCompatActivity {
      */
     private void initCarousel() {
         ArrayList<Item> exampleCarouselItems = new ArrayList<>();
-        exampleCarouselItems.add(new Item("Image 1", "http://www.w3schools.com/css/img_fjords.jpg") );
-        exampleCarouselItems.add(new Item("Image 2", "https://www.smashingmagazine.com/wp-content/uploads/2015/06/10-dithering-opt.jpg") );
-        exampleCarouselItems.add(new Item("Image 3", "https://codepo8.github.io/canvas-images-and-pixels/img/horse.png") );
-        exampleCarouselItems.add(new Item("Image 4", "https://cdn.spacetelescope.org/archives/images/publicationjpg/heic0602a.jpg") );
-        exampleCarouselItems.add(new Item("Image 5", "http://www.vital-capital.com/media/EARTH_AT_NIGH_363137a.jpg") );
-        exampleCarouselItems.add(new Item("Image 6", "http://www.zastavki.com/pictures/originals/2013/Photoshop_Image_of_the_horse_053857_.jpg") );
-        exampleCarouselItems.add(new Item("Image 7", "https://www.tes.com/sites/default/files/news_article_images/trump_pic.jpg") );
+        exampleCarouselItems.add(new Item("Image 1", "http://www.w3schools.com/css/img_fjords.jpg"));
+        exampleCarouselItems.add(new Item("Image 2", "https://www.smashingmagazine.com/wp-content/uploads/2015/06/10-dithering-opt.jpg"));
+        exampleCarouselItems.add(new Item("Image 3", "https://codepo8.github.io/canvas-images-and-pixels/img/horse.png"));
+        exampleCarouselItems.add(new Item("Image 4", "https://cdn.spacetelescope.org/archives/images/publicationjpg/heic0602a.jpg"));
+        exampleCarouselItems.add(new Item("Image 5", "http://www.vital-capital.com/media/EARTH_AT_NIGH_363137a.jpg"));
+        exampleCarouselItems.add(new Item("Image 6", "http://www.zastavki.com/pictures/originals/2013/Photoshop_Image_of_the_horse_053857_.jpg"));
+        exampleCarouselItems.add(new Item("Image 7", "https://www.tes.com/sites/default/files/news_article_images/trump_pic.jpg"));
 
         carousel.updateResults(exampleCarouselItems);
         carousel.setHeaderText("Some example images");
