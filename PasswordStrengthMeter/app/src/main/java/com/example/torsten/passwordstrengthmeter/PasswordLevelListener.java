@@ -6,5 +6,5 @@ package com.example.torsten.passwordstrengthmeter;
 
 public interface PasswordLevelListener {
 
-    public void onPasswordLevelChange(int strength);
+    void onPasswordLevelChange(int strength);
 }
